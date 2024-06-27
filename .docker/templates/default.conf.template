@@ -1,0 +1,63 @@
+upstream api {
+  server model:11434;
+}
+
+server {
+    listen ${NGINX_PORT};
+    server_name localhost;
+
+    root ${NGINX_WEB_ROOT};
+
+    proxy_connect_timeout 3600;
+    proxy_send_timeout    3600;
+    proxy_read_timeout    3600;
+    send_timeout          3600;
+
+    location / {
+        index index.html;
+    }
+
+    location /api/pull {
+        proxy_pass http://api;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    
+    location /api/tags {
+        proxy_pass http://api;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    
+    location /api/generate {
+        proxy_pass http://api;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /api/chat {
+        proxy_pass http://api;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /api/embeddings {
+        proxy_pass http://api;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Send log message to files symlinked to stdout/stderr.
+    error_log /dev/stderr;
+    access_log /dev/stdout main;
+}

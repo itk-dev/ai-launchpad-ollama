@@ -1,0 +1,38 @@
+networks:
+  frontend:
+    external: true
+  app:
+    driver: bridge
+    internal: false
+
+services:
+  nginx:
+    image: nginxinc/nginx-unprivileged:alpine
+    networks:
+      - app
+      - frontend
+    depends_on:
+      - model
+    ports:
+      - '8080'
+    volumes:
+      - ./.docker/templates:/etc/nginx/templates:ro
+      - ./index.html:/app/index.html
+    environment:
+      NGINX_WEB_ROOT: /app
+      NGINX_PORT: 8080
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=frontend"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${COMPOSE_DOMAIN}`)"
+
+  model:
+    image: ollama/ollama
+    networks:
+      - app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "11434"
+    volumes:
+      - ./.docker/data/ollama:/root/.ollama
