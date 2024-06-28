@@ -21,6 +21,7 @@ services:
     environment:
       NGINX_WEB_ROOT: /app
       NGINX_PORT: 8080
+      NGINX ALLOW_IP: "0.0.0.0"
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=frontend"

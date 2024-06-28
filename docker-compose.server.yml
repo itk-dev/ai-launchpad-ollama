@@ -1,6 +1,8 @@
 services:
   nginx:
     restart: unless-stopped
+    environment:
+      NGINX_ALLOW_IP: "5.9.78.57/32"
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=frontend"
