@@ -1,5 +1,5 @@
 upstream api {
-  server model:11434;
+  server ollama:11434;
 }
 
 server {
