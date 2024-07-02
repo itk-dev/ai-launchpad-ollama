@@ -2,7 +2,7 @@ services:
   nginx:
     restart: unless-stopped
     environment:
-      NGINX_ALLOW_IP: "5.9.78.57/32"
+      NGINX_ALLOW_IP: "${NGINX_ALLOW_IP}"
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=frontend"
@@ -13,7 +13,7 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${COMPOSE_SERVER_DOMAIN}`)"
       
-  model:
+  ollama:
     environment:
       - OLLAMA_NUM_PARALLEL=12
       - OLLAMA_MAX_LOADED_MODELS=2
